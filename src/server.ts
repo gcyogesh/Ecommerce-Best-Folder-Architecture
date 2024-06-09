@@ -10,10 +10,10 @@ app.use(express.json())
 import Connection from './connection/Database';
 Connection()
 
-import router from './routes/ProductRoute';
-app.use('/api/v1/product', router);
-
-
+import productRouter from './routes/ProductRoute';
+app.use('/api/v1/product', productRouter);
+import userRouter from './routes/UserRoute';
+app.use('/api/v1/user', userRouter);
 
 
 

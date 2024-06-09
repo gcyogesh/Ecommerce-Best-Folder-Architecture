@@ -48,8 +48,12 @@ export const PostProducts = async (req: Request, res: Response) => {
 
 
 export const GetProducts = async(req:Request, res:Response)=>{
+
     try {
-        const product =  await ProductModel.find({});
+        const {page=1, limit = 10} = req.query;
+        const skip = (parseInt(page as string)-1)* parseInt(limit as string);
+        
+        const product =  await ProductModel.find({}).skip(skip).limit(parseInt(limit as string)).exec();
         res.status(201).json({msg:"Get products data sucessfully",sucess:true, data:product})
         
     } catch (error) {
@@ -90,7 +94,21 @@ export const UpdateProducts = async(req:Request, res:Response)=>{
 
 }
 
-export const SearchProduct = ()=>{
-    
+// export const SearchProducts = async (req: Request, res: Response) => {
+//     const { name, category, minPrice, maxPrice, color, minRating } = req.query;
+//     const query: any = {};
 
-}
+//     if (name) query.productname = new RegExp(name as string, 'i'); // case-insensitive search
+//     if (category) query.productcategory = category;
+//     if (minPrice || maxPrice) query.price = { $gte: minPrice || 0, $lte: maxPrice || Infinity };
+//     if (color) query.productcolor = color;
+//     if (minRating) query.rating = { $gte: minRating };
+
+//     try {
+//         const products = await ProductModel.find(query);
+//         res.status(200).json({ success: true, data: products });
+//     } catch (error) {
+//         console.error("Error searching products:", error);
+//         res.status(500).json({ success: false, msg: "Internal server error" });
+//     }
+// };

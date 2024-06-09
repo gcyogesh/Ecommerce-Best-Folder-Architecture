@@ -3,14 +3,15 @@ import express from 'express'
 import { ProductValidator, validate } from "../utils/ExpressValidator";
 import upload from "../middlewares/MulterMiddleware";
 
-const router = express.Router();
+const productRouter = express.Router();
 
 
-router.post('/', upload.single('imageUrl'), ProductValidator(), validate,   PostProducts)
-router.get('/', GetProducts);
-router.delete('/:id', DeleteProducts)
-router.patch('/:id', UpdateProducts)
+productRouter.post('/', upload.single('imageUrl'), ProductValidator(), validate,   PostProducts)
+productRouter.get('/', GetProducts);
+productRouter.get('/search');
+productRouter.delete('/:id', DeleteProducts)
+productRouter.patch('/:id', UpdateProducts)
 
 
 
-export default router;
+export default productRouter;
