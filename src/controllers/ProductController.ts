@@ -63,6 +63,8 @@ export const GetProducts = async(req:Request, res:Response)=>{
 
 }
 
+
+
 export const DeleteProducts = async(req:Request, res:Response)=>{
     try {
         const productId =  req.params.id;

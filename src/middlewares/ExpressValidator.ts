@@ -15,6 +15,13 @@ export const ProductValidator = ()=>{
     ]
 }
 
+export const UserValidator =()=>{
+    return[
+        check('username').notEmpty().withMessage("Username is compulsory"),
+        check('email').isEmail().withMessage("Not a valid Email address"),
+        check('password').isStrongPassword().withMessage("Password must be strong and have 6 character length which must include one upper case, one number & one special character")
+    ]
+}
 
 export const validate  = (req:Request, res:Response, next:NextFunction)=>{
     const errors = validationResult(req);

@@ -1,6 +1,6 @@
 import { PostProducts, GetProducts, DeleteProducts, UpdateProducts} from "../controllers/ProductController";
 import express from 'express'
-import { ProductValidator, validate } from "../utils/ExpressValidator";
+import { ProductValidator, validate } from "../middlewares/ExpressValidator";
 import upload from "../middlewares/MulterMiddleware";
 
 const productRouter = express.Router();
