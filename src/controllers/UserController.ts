@@ -2,6 +2,7 @@ import UserModel from "../models/UserSchema";
 import { Request, Response } from "express";
 import { hashPassword, comparePassword } from "../utils/HashPassword";
 import { ProvideMail } from "../utils/NodeMailer";
+import { createAccessToken } from "../middlewares/JWTValidate";
 
 
 export const RegisterUser = async(req:Request, res:Response)=>{
@@ -41,6 +42,8 @@ export const RegisterUser = async(req:Request, res:Response)=>{
 
 }
 
+
+
 export const LoginUser = async(req:Request, res:Response)=>{
     try {
         const {email, password} = req.body;
@@ -49,13 +52,19 @@ export const LoginUser = async(req:Request, res:Response)=>{
         if(!user){
             return res.status(400).json({msg:"Not a valid email", sucess:false})
         }
-        res.json("Logged in ")
-
         // comparte the pasword with register 
-        const matchPasswordWithRegister = await comparePassword(password,user.password ?? '');
-        if(matchPasswordWithRegister){
-                
+        const isMatch = await comparePassword(password, user.password ?? '')
+        if(!isMatch){
+            return res.status(400).json({msg:"Invalid email or password", sucess:false})
         }
+
+        // lesh create jwt
+        const accessToken = createAccessToken(user);
+        res.cookie('access-token', accessToken,{httpOnly:true, maxAge: 35000000, })
+        
+        return res.status(200).json({msg:"User logged in sucessfully", sucess:true, data:user, token:accessToken})
+
+         
 
     } catch (error) {
         console.log(error, "Error registering data")

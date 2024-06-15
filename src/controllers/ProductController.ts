@@ -50,7 +50,7 @@ export const PostProducts = async (req: Request, res: Response) => {
 export const GetProducts = async(req:Request, res:Response)=>{
 
     try {
-        const {page=1, limit = 10} = req.query;
+        const {page=1, limit = 25} = req.query;
         const skip = (parseInt(page as string)-1)* parseInt(limit as string);
         
         const product =  await ProductModel.find({}).skip(skip).limit(parseInt(limit as string)).exec();
@@ -83,7 +83,7 @@ export const DeleteProducts = async(req:Request, res:Response)=>{
 export const UpdateProducts = async(req:Request, res:Response)=>{
     try {
         const productId = req.params.id;
-        const updateProduct = await ProductModel.findByIdAndUpdate(productId, req.body);
+        const updateProduct = await ProductModel.findByIdAndUpdate(productId, req.body, {new:true});
         if(!updateProduct){
             res.status(404).json({msg:"Not able to update this thing",sucess:false})
         }
