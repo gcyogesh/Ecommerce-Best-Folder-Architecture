@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { hashPassword, comparePassword } from "../utils/HashPassword";
 import { ProvideMail } from "../utils/NodeMailer";
 import { createAccessToken } from "../middlewares/JWTValidate";
+import { AuthRequest } from "../../types";
 
 
 export const RegisterUser = async(req:Request, res:Response)=>{
@@ -58,13 +59,15 @@ export const LoginUser = async(req:Request, res:Response)=>{
             return res.status(400).json({msg:"Invalid email or password", sucess:false})
         }
 
+
         // lesh create jwt
         const accessToken = createAccessToken(user);
-        res.cookie('access-token', accessToken,{httpOnly:true, maxAge: 35000000, })
+        res.cookie('access-token', accessToken,{httpOnly:true, maxAge: 35000000 })
         
         return res.status(200).json({msg:"User logged in sucessfully", sucess:true, data:user, token:accessToken})
 
          
+
 
     } catch (error) {
         console.log(error, "Error registering data")
@@ -72,4 +75,16 @@ export const LoginUser = async(req:Request, res:Response)=>{
     }
 
 
+}
+
+
+
+export const GoToDashboard = (req:AuthRequest, res:Response)=>{
+  try {
+    const user = req.user;
+    res.json({ msg: `Hey ${user.username}, you are in the dashboard page with authentication` });
+    res.json("Hey i am in dashboard page haha with authentication")
+  } catch (error) {
+    console.log(error)
+  }
 }
